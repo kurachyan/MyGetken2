@@ -107,6 +107,60 @@ namespace Getken
                 _wcnt = Array.Count<String>();
             }
         }
+        public void Exec(String msg)
+        {   // Token抽出（固定区切り）
+            Setbuf(msg);                 // 入力内容の作業領域設定
+
+            if (!_empty)
+            {   // バッファーに実装有り
+                Array = _wbuf.Split(_trim);         // トークン抽出
+                _wcnt = Array.Count<String>();      // 要素数取り出し
+            }
+        }
+        public void Exec(String msg, char[] __trim)
+        {   // Token抽出（指定区切り）
+            Setbuf(msg);                 // 入力内容の作業領域設定
+
+            if (!_empty)
+            {   // バッファーに実装有り
+                Array = _wbuf.Split(__trim);
+                _wcnt = Array.Count<String>();
+            }
+        }
+
+        private void Setbuf(String _strbuf)
+        {   // [_wbuf]情報設定
+            _wbuf = _strbuf;
+            if (_wbuf == null)
+            {   // 設定情報は無し？
+                _empty = true;
+            }
+            else
+            {   // 整形処理を行う
+                // 不要情報削除
+                if (rskip == null || lskip == null)
+                {   // 未定義？
+                    rskip = new CS_Rskip();
+                    lskip = new CS_Lskip();
+                }
+                rskip.Wbuf = _wbuf;
+                rskip.Exec();
+                lskip.Wbuf = rskip.Wbuf;
+                lskip.Exec();
+                _wbuf = lskip.Wbuf;
+
+                // 作業の為の下処理
+                if (_wbuf.Length == 0 || _wbuf == null)
+                {   // バッファー情報無し
+                    // _wbuf = null;
+                    _empty = true;
+                }
+                else
+                {
+                    _empty = false;
+                }
+            }
+        }
         #endregion
     }
     //  FIXME : Splitを使用すると、区切り情報も要素として見る。
