@@ -10,8 +10,12 @@ namespace Getken
     public class CS_Getken
     {
         #region 共有領域
+        // '16.0103 両側余白情報削除の追加　及び、右側・左側余白処理のコメント化
+/*
         CS_Rskip rskip;             // 右側余白情報を削除
         CS_Lskip lskip;             // 左側余白情報を削除
+*/
+        CS_LRskip lrskip;           // 両側余白情報を削除
 
         private String _wbuf;       // ソース情報
         private Boolean _empty;     // ソース情報有無
@@ -32,6 +36,7 @@ namespace Getken
                 else
                 {   // 整形処理を行う
                     // 不要情報削除
+/*
                     if (rskip == null || lskip == null)
                     {   // 未定義？
                         rskip = new CS_Rskip();
@@ -42,7 +47,14 @@ namespace Getken
                     lskip.Wbuf = rskip.Wbuf;
                     lskip.Exec();
                     _wbuf = lskip.Wbuf;
-
+*/
+                    if (lrskip == null)
+                    {   // 未定義？
+                        lrskip = new CS_LRskip();
+                    }
+                    lrskip.Exec(_wbuf);
+                    _wbuf = lrskip.Wbuf;
+                    
                     // 作業の為の下処理
                     if (_wbuf.Length == 0 || _wbuf == null)
                     {   // バッファー情報無し
@@ -76,9 +88,11 @@ namespace Getken
         {   // コンストラクタ
             _wbuf = null;       // 設定情報無し
             _empty = true;
-
+/*
             rskip = null;
             lskip = null;
+*/
+            lrskip = null;
         }
         #endregion
 
@@ -87,9 +101,12 @@ namespace Getken
         {   // 作業領域の初期化
             _wbuf = null;       // 設定情報無し
             _empty = true;
-
+/*
             rskip = null;
             lskip = null;
+*/
+            lrskip = null;
+
         }
         public void Exec()
         {   // Token抽出（固定区切り）
@@ -138,6 +155,7 @@ namespace Getken
             else
             {   // 整形処理を行う
                 // 不要情報削除
+/*
                 if (rskip == null || lskip == null)
                 {   // 未定義？
                     rskip = new CS_Rskip();
@@ -148,6 +166,14 @@ namespace Getken
                 lskip.Wbuf = rskip.Wbuf;
                 lskip.Exec();
                 _wbuf = lskip.Wbuf;
+*/
+
+                if (lrskip == null)
+                {   // 未定義？
+                    lrskip = new CS_LRskip();
+                }
+                lrskip.Exec(_wbuf);
+                _wbuf = lrskip.Wbuf;
 
                 // 作業の為の下処理
                 if (_wbuf.Length == 0 || _wbuf == null)
