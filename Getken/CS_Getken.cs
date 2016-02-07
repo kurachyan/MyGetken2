@@ -10,16 +10,12 @@ namespace Getken
     public class CS_Getken
     {
         #region 共有領域
-        // '16.0103 両側余白情報削除の追加　及び、右側・左側余白処理のコメント化
-/*
-        CS_Rskip rskip;             // 右側余白情報を削除
-        CS_Lskip lskip;             // 左側余白情報を削除
-*/
+        // '16.01.13 両側余白情報削除の追加　及び、右側・左側余白処理のコメント化
         CS_LRskip lrskip;           // 両側余白情報を削除
 
-        private String _wbuf;       // ソース情報
-        private Boolean _empty;     // ソース情報有無
-        private int _wcnt;          // トークン登録数
+        private static String _wbuf;       // ソース情報
+        private static Boolean _empty;     // ソース情報有無
+        private static int _wcnt;          // トークン登録数
         public String Wbuf
         {
             get
@@ -36,18 +32,6 @@ namespace Getken
                 else
                 {   // 整形処理を行う
                     // 不要情報削除
-/*
-                    if (rskip == null || lskip == null)
-                    {   // 未定義？
-                        rskip = new CS_Rskip();
-                        lskip = new CS_Lskip();
-                    }
-                    rskip.Wbuf = _wbuf;
-                    rskip.Exec();
-                    lskip.Wbuf = rskip.Wbuf;
-                    lskip.Exec();
-                    _wbuf = lskip.Wbuf;
-*/
                     if (lrskip == null)
                     {   // 未定義？
                         lrskip = new CS_LRskip();
@@ -80,7 +64,7 @@ namespace Getken
                 _wcnt = value;
             }
         }
-        private char[] _trim = { ' ', '\t', '\r', '\n' };
+        private static readonly char[] _trim = { ' ', '\t', '\r', '\n' };
         #endregion
 
         #region コンストラクタ
@@ -88,10 +72,7 @@ namespace Getken
         {   // コンストラクタ
             _wbuf = null;       // 設定情報無し
             _empty = true;
-/*
-            rskip = null;
-            lskip = null;
-*/
+
             lrskip = null;
         }
         #endregion
@@ -101,12 +82,8 @@ namespace Getken
         {   // 作業領域の初期化
             _wbuf = null;       // 設定情報無し
             _empty = true;
-/*
-            rskip = null;
-            lskip = null;
-*/
-            lrskip = null;
 
+            lrskip = null;
         }
         public void Exec()
         {   // Token抽出（固定区切り）
@@ -155,19 +132,6 @@ namespace Getken
             else
             {   // 整形処理を行う
                 // 不要情報削除
-/*
-                if (rskip == null || lskip == null)
-                {   // 未定義？
-                    rskip = new CS_Rskip();
-                    lskip = new CS_Lskip();
-                }
-                rskip.Wbuf = _wbuf;
-                rskip.Exec();
-                lskip.Wbuf = rskip.Wbuf;
-                lskip.Exec();
-                _wbuf = lskip.Wbuf;
-*/
-
                 if (lrskip == null)
                 {   // 未定義？
                     lrskip = new CS_LRskip();
